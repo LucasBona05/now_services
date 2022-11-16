@@ -26,7 +26,7 @@ class NowResponseUseCaseError<T> implements NowResponseUseCase<T> {
 }
 
 class NowResponseUseCaseSuccess<T> implements NowResponseUseCase<T> {
-  T data;
+  dynamic data;
   String message;
 
   NowResponseUseCaseSuccess({
