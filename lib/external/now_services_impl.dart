@@ -77,20 +77,21 @@ class NowServicesimpl implements NowServices {
     http.Client? httpClient = client ?? http.Client();
 
     try {
-      final requestHeaders = _header ?? <String, String>{};
-      response = response ?? await doRequest(
-        client: httpClient,
-        headers: requestHeaders as Map<String, String>,
-        msgFailure: msgFailure,
-        msgTimeOut: msgTimeOut,
-        rest: rest,
-        url: url,
-        jsonRequest: jsonRequest,
-        timeoutDefault: timeoutDefault,
-      );
+      final requestHeaders = headers ?? <String, String>{};
+      response = response ??
+          await doRequest(
+            client: httpClient,
+            headers: requestHeaders as Map<String, String>,
+            msgFailure: msgFailure,
+            msgTimeOut: msgTimeOut,
+            rest: rest,
+            url: url,
+            jsonRequest: jsonRequest,
+            timeoutDefault: timeoutDefault,
+          );
 
       if (response.statusCode == 200) {
-        NowResponseDataSourceSuccess<S>(
+        return NowResponseDataSourceSuccess<S>(
           response: NowResponse<S>(
             statusCode: response.statusCode,
             headers: response.headers,
@@ -112,7 +113,12 @@ class NowServicesimpl implements NowServices {
     } finally {
       client?.close();
     }
-    return null;
+    return NowResponseDataSourceError<S>(
+      responseError: NowResponseError(
+        message: response.body,
+        error: response.statusCode,
+      ),
+    );
   }
 
   Future<http.Response> doRequest({
