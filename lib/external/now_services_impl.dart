@@ -90,7 +90,7 @@ class NowServicesimpl implements NowServices {
             timeoutDefault: timeoutDefault,
           );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return NowResponseDataSourceSuccess<S>(
           response: NowResponse<S>(
             statusCode: response.statusCode,
