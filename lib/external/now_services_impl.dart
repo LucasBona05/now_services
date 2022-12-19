@@ -81,7 +81,7 @@ class NowServicesimpl implements NowServices {
       response = response ??
           await doRequest(
             client: httpClient,
-            headers: requestHeaders as Map<String, String>,
+            headers: requestHeaders,
             msgFailure: msgFailure,
             msgTimeOut: msgTimeOut,
             rest: rest,
@@ -117,6 +117,7 @@ class NowServicesimpl implements NowServices {
       responseError: NowResponseError(
         message: response.body,
         error: response.statusCode,
+        responseHttp: response,
       ),
     );
   }
