@@ -1,5 +1,5 @@
 class NowResponse<T> {
-  final String? data;
+  final T? data;
   final int? statusCode;
   final Map<String, dynamic>? headers;
   final int? contentLength;

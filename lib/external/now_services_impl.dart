@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -70,7 +71,6 @@ class NowServicesimpl implements NowServices {
     }
 
     // Inicializando lib http para obter resposta
-
     http.Response? response;
 
     // Inicializando cliente
@@ -97,11 +97,14 @@ class NowServicesimpl implements NowServices {
             headers: response.headers,
             isSuccess: true,
             contentLength: response.contentLength,
-            data: response.body,
+            data: fromJson != null
+                ? fromJson(json.decode(response.body))
+                : response.body as S?,
           ),
         );
       }
     } catch (error, stackTrace) {
+      print(error.toString() + stackTrace.toString());
       return NowResponseDataSourceError<S>(
         responseError: NowResponseError(
           message: error.toString(),
@@ -115,8 +118,8 @@ class NowServicesimpl implements NowServices {
     }
     return NowResponseDataSourceError<S>(
       responseError: NowResponseError(
-        message: response.body,
-        error: response.statusCode,
+        error: response.body,
+        message: response.statusCode.toString(),
         responseHttp: response,
       ),
     );
